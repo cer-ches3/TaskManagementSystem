@@ -1,5 +1,8 @@
-package com.example.TaskManagementSystem.entity;
+package com.example.TaskManagementSystem.model.entity;
 
+import com.example.TaskManagementSystem.model.enums.PriorityTask;
+import com.example.TaskManagementSystem.model.enums.StatusTask;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -25,12 +28,16 @@ public class Task {
     @Column(name = "priority_task")
     private PriorityTask priorityTask;
 
-    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
-    private List<Comment> comments;
+    @Column(name = "comments")
+    private List<String> comments;
 
-    @ManyToOne
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "author_id")
     private User author;
 
-    @ManyToOne
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "executor_id")
     private User executor;
 }

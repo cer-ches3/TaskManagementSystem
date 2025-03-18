@@ -1,5 +1,6 @@
-package com.example.TaskManagementSystem.entity;
+package com.example.TaskManagementSystem.model.entity;
 
+import com.example.TaskManagementSystem.model.enums.RoleUser;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -19,5 +20,6 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "role")
     private RoleUser roleUser;
 }
