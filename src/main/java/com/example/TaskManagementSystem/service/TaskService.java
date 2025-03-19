@@ -15,11 +15,10 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class TaskService implements CRUDService<TaskDto> {
+public class TaskService {
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
 
-    @Override
     public List<TaskDto> getAll() {
         return taskRepository.findAll()
                 .stream()
@@ -27,7 +26,6 @@ public class TaskService implements CRUDService<TaskDto> {
                 .toList();
     }
 
-    @Override
     public ResponseEntity getById(long id) {
         Task existsTask = taskRepository.findById(id).orElse(null);
 
@@ -38,12 +36,7 @@ public class TaskService implements CRUDService<TaskDto> {
         return ResponseEntity.status(HttpStatus.OK).body(mapToDto(existsTask));
     }
 
-    @Override
     public ResponseEntity create(TaskDto taskDto) {
-        if (isExistsTask(taskDto)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(MessageFormat.format("Task with title {0} is already exists!", taskDto.getTitle()));
-        }
-
         Task newTask = mapToEntity(taskDto);
         Long authorId = taskDto.getAuthorId();
         Long executorId = taskDto.getExecutorId();
@@ -64,12 +57,11 @@ public class TaskService implements CRUDService<TaskDto> {
         return ResponseEntity.status(HttpStatus.CREATED).body(mapToDto(newTask));
     }
 
-    @Override
-    public ResponseEntity update(TaskDto taskDto) {
-        Task existsTask = taskRepository.findTaskByTitle(taskDto.getTitle()).orElse(null);
+    public ResponseEntity update(Long id, TaskDto taskDto) {
+        Task existsTask = taskRepository.findById(id).orElse(null);
 
         if (existsTask == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(MessageFormat.format("Task with title: {0} not found!", taskDto.getTitle()));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(MessageFormat.format("Task with Id: {0} not found!", id));
         }
 
         existsTask.setStatusTask(taskDto.getStatusTask());
@@ -92,7 +84,6 @@ public class TaskService implements CRUDService<TaskDto> {
         return ResponseEntity.status(HttpStatus.OK).body(mapToDto(existsTask));
     }
 
-    @Override
     public ResponseEntity deleteById(long id) {
         Task extendsTask = taskRepository.findById(id).orElse(null);
 

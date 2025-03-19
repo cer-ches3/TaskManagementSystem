@@ -24,14 +24,14 @@ public class TaskController {
         return taskService.getById(id);
     }
 
-    @PostMapping("/create")
+    @PostMapping()
     public ResponseEntity createUser(@RequestBody TaskDto taskDto) {
         return taskService.create(taskDto);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity updateUser(@RequestBody TaskDto taskDto) {
-        return taskService.update(taskDto);
+    @PutMapping("/{id}")
+    public ResponseEntity updateUser(@PathVariable long id, @RequestBody TaskDto taskDto) {
+        return taskService.update(id, taskDto);
     }
 
     @DeleteMapping("/{id}")

@@ -1,7 +1,7 @@
 package com.example.TaskManagementSystem.model.dto;
 
-import com.example.TaskManagementSystem.model.enums.PriorityTask;
-import com.example.TaskManagementSystem.model.enums.StatusTask;
+import com.example.TaskManagementSystem.model.PriorityTask;
+import com.example.TaskManagementSystem.model.StatusTask;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
