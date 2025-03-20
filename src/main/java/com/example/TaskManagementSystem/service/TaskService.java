@@ -107,7 +107,7 @@ public class TaskService {
 
         taskRepository.deleteById(id);
 
-        return ResponseEntity.status(HttpStatus.OK).body(MessageFormat.format("Task with ID: {0} is deleted", id));
+        return ResponseEntity.status(HttpStatus.OK).body(MessageFormat.format("Task with ID: {0} is deleted.", id));
     }
 
     public ResponseEntity addComment(long id, CommentDto commentDto) {

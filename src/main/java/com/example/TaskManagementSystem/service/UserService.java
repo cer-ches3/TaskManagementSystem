@@ -52,6 +52,5 @@ public class UserService {
         userRepository.save(existsUser);
 
         return ResponseEntity.status(HttpStatus.OK).body(MessageFormat.format("Update user with ID {0}.", id));
-
     }
 }
