@@ -20,12 +20,12 @@ public class JwtUtils {
     private Duration tokenExpiration;
 
     public String generateJwtToken(AppUserDetails userDetails){
-        return generateTokenFromUsername(userDetails.getUsername());
+        return generateTokenFromUsername(userDetails.getEmail());
     }
 
-    public String generateTokenFromUsername(String username) {
+    public String generateTokenFromUsername(String email) {
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(email)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime() + tokenExpiration.toMillis()))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)

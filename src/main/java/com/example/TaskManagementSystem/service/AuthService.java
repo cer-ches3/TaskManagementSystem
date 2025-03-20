@@ -19,8 +19,11 @@ public class AuthService {
     private final SecurityService securityService;
 
     public ResponseEntity registerUser(@RequestBody CreateUserRequest createUserRequest) {
-        if (userRepository.existsByEmail(createUserRequest.getEmail())){
+        if (userRepository.existsByEmail(createUserRequest.getEmail())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(MessageFormat.format("Email {0} is already in use!", createUserRequest.getEmail()));
+        }
+        if (userRepository.existsByUsername(createUserRequest.getUsername())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(MessageFormat.format("Username {0} is already in use!", createUserRequest.getUsername()));
         }
 
         securityService.register(createUserRequest);

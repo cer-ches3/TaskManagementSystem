@@ -1,4 +1,8 @@
 package com.example.TaskManagementSystem.model.dto;
 
-public class CommentDTO {
+import lombok.Data;
+
+@Data
+public class CommentDto {
+    String comment;
 }

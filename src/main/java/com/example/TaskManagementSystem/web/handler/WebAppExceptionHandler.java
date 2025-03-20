@@ -1,7 +1,7 @@
 package com.example.TaskManagementSystem.web.handler;
 
-import com.example.TaskManagementSystem.exception.AlreadyExistsException;
-import com.example.TaskManagementSystem.exception.EntityNotFoundException;
+import com.example.TaskManagementSystem.web.exception.AlreadyExistsException;
+import com.example.TaskManagementSystem.web.exception.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

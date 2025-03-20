@@ -32,7 +32,7 @@ public class SecurityService {
     public AuthResponse authenticateUser(LoginRequest loginRequest){
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsername(),
+                        loginRequest.getEmail(),
                         loginRequest.getPassword()
                 ));
 

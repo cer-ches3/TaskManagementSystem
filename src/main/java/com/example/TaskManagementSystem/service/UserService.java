@@ -30,21 +30,22 @@ public class UserService {
     }
 
     public ResponseEntity deleteById(long id) {
-        User existsUser = userRepository.findById(id).orElse(null);
-
-        if (existsUser == null) {
+        if (!userRepository.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(MessageFormat.format("User with id: {0} not found!", id));
         }
 
         userRepository.deleteById(id);
+
         return ResponseEntity.status(HttpStatus.OK).body(MessageFormat.format("User with id {0} is deleted.", id));
     }
 
     public ResponseEntity update(Long id, User user) {
         User existsUser = userRepository.findById(id).orElse(null);
+
         if (existsUser == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(MessageFormat.format("User with ID {0} not found!", id));
         }
+
         existsUser.setUsername(user.getUsername());
         existsUser.setEmail(user.getEmail());
         existsUser.setRoles(user.getRoles());

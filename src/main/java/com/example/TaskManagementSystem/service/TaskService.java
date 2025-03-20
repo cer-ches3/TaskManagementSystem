@@ -1,5 +1,6 @@
 package com.example.TaskManagementSystem.service;
 
+import com.example.TaskManagementSystem.model.dto.CommentDto;
 import com.example.TaskManagementSystem.model.dto.TaskDto;
 import com.example.TaskManagementSystem.model.entity.Task;
 import com.example.TaskManagementSystem.model.entity.User;
@@ -8,6 +9,8 @@ import com.example.TaskManagementSystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
@@ -26,6 +29,18 @@ public class TaskService {
                 .toList();
     }
 
+    public List<TaskDto> getAllByExecutorId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String executorName = authentication.getName();
+        Long executorId = userRepository.findByUsername(executorName).orElse(null).getId();
+
+        return taskRepository.findAll()
+                .stream()
+                .filter(t -> t.getExecutor().getId().equals(executorId))
+                .map(TaskService::mapToDto)
+                .toList();
+    }
+
     public ResponseEntity getById(long id) {
         Task existsTask = taskRepository.findById(id).orElse(null);
 
@@ -37,17 +52,15 @@ public class TaskService {
     }
 
     public ResponseEntity create(TaskDto taskDto) {
-        Task newTask = mapToEntity(taskDto);
-        Long authorId = taskDto.getAuthorId();
-        Long executorId = taskDto.getExecutorId();
-        User author = userRepository.findById(authorId).orElse(null);
-        User executor = userRepository.findById(executorId).orElse(null);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        User author = userRepository.findByUsername(username).orElse(null);
 
-        if (author == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(MessageFormat.format("Author with ID: {0} not found!", authorId));
-        }
+        Task newTask = mapToEntity(taskDto);
+        User executor = userRepository.findById(taskDto.getExecutorId()).orElse(null);
+
         if (executor == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(MessageFormat.format("Executor with ID: {0} not found!", executorId));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(MessageFormat.format("Executor with ID: {0} not found!", taskDto.getExecutorId()));
         }
 
         newTask.setAuthor(author);
@@ -64,36 +77,59 @@ public class TaskService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(MessageFormat.format("Task with Id: {0} not found!", id));
         }
 
-        existsTask.setStatusTask(taskDto.getStatusTask());
-        existsTask.setPriorityTask(taskDto.getPriorityTask());
-        existsTask.setComments(taskDto.getComments());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String executorNameFromContext = authentication.getName();
 
-        Long authorId = taskDto.getAuthorId();
-        Long executorId = taskDto.getExecutorId();
-        User author = userRepository.findById(authorId).orElse(null);
-        User executor = userRepository.findById(executorId).orElse(null);
+        if (isAdmin(executorNameFromContext) || isExecutor(executorNameFromContext, existsTask)) {
+            existsTask.setStatusTask(taskDto.getStatusTask());
+            existsTask.setPriorityTask(taskDto.getPriorityTask());
+            existsTask.setComments(taskDto.getComments());
 
-        if (author == null || executor == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(MessageFormat.format("Author or executor with ID: {0} not found!", authorId));
+            Long executorId = taskDto.getExecutorId();
+            User executor = userRepository.findById(executorId).orElse(null);
+
+            if (executor == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(MessageFormat.format("Executor with ID: {0} not found!", executorId));
+            }
+
+            existsTask.setExecutor(executor);
+            taskRepository.save(existsTask);
+
+            return ResponseEntity.status(HttpStatus.OK).body(mapToDto(existsTask));
         }
-
-        existsTask.setAuthor(author);
-        existsTask.setExecutor(executor);
-        taskRepository.save(existsTask);
-
-        return ResponseEntity.status(HttpStatus.OK).body(mapToDto(existsTask));
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Full authentication is required to access this resource!");
     }
 
     public ResponseEntity deleteById(long id) {
-        Task extendsTask = taskRepository.findById(id).orElse(null);
-
-        if (extendsTask == null) {
+        if (!taskRepository.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(MessageFormat.format("Task with ID: {0} not found!", id));
         }
 
         taskRepository.deleteById(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(MessageFormat.format("Task with ID: {0} is deleted", id));
+    }
+
+    public ResponseEntity addComment(long id, CommentDto commentDto) {
+        Task existsTask = taskRepository.findById(id).orElse(null);
+
+        if (existsTask == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(MessageFormat.format("Task with ID: {0} not found!", id));
+        }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String executorNameFromContext = authentication.getName();
+
+        if (isAdmin(executorNameFromContext) || isExecutor(executorNameFromContext, existsTask)) {
+            List<String> comments = new java.util.ArrayList<>(existsTask.getComments().stream().toList());
+            comments.add(commentDto.getComment());
+
+            existsTask.setComments(comments);
+            taskRepository.save(existsTask);
+
+            return ResponseEntity.status(HttpStatus.OK).body(MessageFormat.format("Added comment {0} for task {1}.", commentDto.getComment(), id));
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Full authentication is required to access this resource!");
     }
 
     private static Task mapToEntity(TaskDto taskDto) {
@@ -120,7 +156,19 @@ public class TaskService {
         return taskDto;
     }
 
-    private boolean isExistsTask(TaskDto taskDto) {
-        return taskRepository.findTaskByTitle(taskDto.getTitle()).isPresent();
+    private boolean isExecutor(String executorNameFromContext, Task existsTask) {
+        Long executorIdFromContext = userRepository.findByUsername(executorNameFromContext).orElse(null).getId();
+        Long executorIdFromTask = existsTask.getExecutor().getId();
+
+        return executorIdFromTask.equals(executorIdFromContext);
+    }
+
+    private boolean isAdmin(String executorNameFromContext) {
+        String role = userRepository.findByUsername(executorNameFromContext).get().getRoles()
+                .stream().
+                findFirst().
+                toString();
+
+        return role.contains("ROLE_ADMIN");
     }
 }
