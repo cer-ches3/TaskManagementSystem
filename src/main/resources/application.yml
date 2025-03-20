@@ -14,3 +14,5 @@ app:
   jwt:
     secret: "someSecretKey"
     tokenExpiration: 60m
+
+

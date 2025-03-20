@@ -29,7 +29,7 @@ public class SecurityService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public AuthResponse authenticateUser(LoginRequest loginRequest){
+    public AuthResponse authenticateUser(LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getEmail(),
@@ -53,7 +53,7 @@ public class SecurityService {
                 .build();
     }
 
-    public void register(CreateUserRequest createUserRequest){
+    public void register(CreateUserRequest createUserRequest) {
         var user = User.builder()
                 .username(createUserRequest.getUsername())
                 .email(createUserRequest.getEmail())

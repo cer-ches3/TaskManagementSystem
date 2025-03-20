@@ -1,0 +1,498 @@
+{
+	"info": {
+		"_postman_id": "f87eb5cc-8f96-4291-855b-583d736ef705",
+		"name": "TaskManagementService",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33432752"
+	},
+	"item": [
+		{
+			"name": "User Copy",
+			"item": [
+				{
+					"name": "GetUserById",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin@mail.ru",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}api/v1/users/1",
+							"host": [
+								"{{baseUrl}}api"
+							],
+							"path": [
+								"v1",
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateUserById",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin@mail.ru",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"admin1\",\n    \"roles\": [\"ROLE_ADMIN\"],\n    \"email\": \"admin@mail.ru\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}api/v1/users/1",
+							"host": [
+								"{{baseUrl}}api"
+							],
+							"path": [
+								"v1",
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllUser",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "user1@mail.ru",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}api/v1/users",
+							"host": [
+								"{{baseUrl}}api"
+							],
+							"path": [
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteUserById",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin@mail.ru",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"email@mail.ru\",\n    \"password\": \"12345678\",\n    \"roleUser\" : \"USER\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}api/v1/users/3",
+							"host": [
+								"{{baseUrl}}api"
+							],
+							"path": [
+								"v1",
+								"users",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth Copy",
+			"item": [
+				{
+					"name": "CreateUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"user1\",\n    \"password\": \"12345\",\n    \"roles\": [\"ROLE_ADMIN\"],\n    \"email\": \"user1@mail.ru\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}api/v1/auth/register",
+							"host": [
+								"{{baseUrl}}api"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Signin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@mail.ru\",\n    \"password\": \"12345\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}api/v1/auth/signin",
+							"host": [
+								"{{baseUrl}}api"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Task Copy",
+			"item": [
+				{
+					"name": "GetAllTask",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin@mail.ru",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}api/v1/tasks",
+							"host": [
+								"{{baseUrl}}api"
+							],
+							"path": [
+								"v1",
+								"tasks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllTaskByExecutor",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "user1@mail.ru",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}api/v1/tasks/my",
+							"host": [
+								"{{baseUrl}}api"
+							],
+							"path": [
+								"v1",
+								"tasks",
+								"my"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetTaskById",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin@mail.ru",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}api/v1/tasks/2",
+							"host": [
+								"{{baseUrl}}api"
+							],
+							"path": [
+								"v1",
+								"tasks",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteTaskById",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin@mail.ru",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}api/v1/tasks/7",
+							"host": [
+								"{{baseUrl}}api"
+							],
+							"path": [
+								"v1",
+								"tasks",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateNewTask",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin@mail.ru",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"task7\",\n    \"statusTask\": \"COMPLETED\",\n    \"priorityTask\": \"LOW\",\n    \"comments\": [\"admin create task for delete\"],\n    \"executorId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}api/v1/tasks",
+							"host": [
+								"{{baseUrl}}api"
+							],
+							"path": [
+								"v1",
+								"tasks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateTaskById",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin@mail.ru",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"title\": \"task1-new\",\n        \"statusTask\": \"IN_PROGRESS\",\n        \"priorityTask\": \"MEDIUM\",\n        \"comments\": [\"Принял в работу\"],\n        \"executorId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}api/v1/tasks/1",
+							"host": [
+								"{{baseUrl}}api"
+							],
+							"path": [
+								"v1",
+								"tasks",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddComment",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "user2@mail.ru",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"comment\": \"user2 добавил коммент\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}api/v1/tasks/add-comment/2",
+							"host": [
+								"{{baseUrl}}api"
+							],
+							"path": [
+								"v1",
+								"tasks",
+								"add-comment",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
