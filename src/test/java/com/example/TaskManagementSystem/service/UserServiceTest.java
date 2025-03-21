@@ -1,6 +1,5 @@
 package com.example.TaskManagementSystem.service;
 
-import com.example.TaskManagementSystem.model.RoleType;
 import com.example.TaskManagementSystem.model.entity.User;
 import com.example.TaskManagementSystem.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +11,10 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;

@@ -35,7 +35,7 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("Test getAllUser")
-    public  void testGetAllUser() {
+    public void testGetAllUser() {
         List<User> users = new ArrayList<>();
         users.add(new User(1L, "test1", "test1@example.com", "password1", new HashSet<>()));
         users.add(new User(2L, "test2", "test2@example.com", "password2", new HashSet<>()));

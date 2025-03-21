@@ -20,7 +20,7 @@ public class CreateUserRequest {
 
     @Override
     public String toString() {
-        return  "username='" + username + '\'' +
+        return "username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", roles=" + roles +
                 ", password='" + password + '\'';

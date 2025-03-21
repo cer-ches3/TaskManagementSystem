@@ -19,7 +19,7 @@ public class JwtUtils {
     @Value("${app.jwt.tokenExpiration}")
     private Duration tokenExpiration;
 
-    public String generateJwtToken(AppUserDetails userDetails){
+    public String generateJwtToken(AppUserDetails userDetails) {
         return generateTokenFromUsername(userDetails.getEmail());
     }
 
@@ -32,24 +32,24 @@ public class JwtUtils {
                 .compact();
     }
 
-    public String getUsername(String token){
+    public String getUsername(String token) {
         return Jwts.parser().setSigningKey(jwtSecret)
                 .parseClaimsJws(token).getBody().getSubject();
     }
 
-    public boolean validate(String authToken){
+    public boolean validate(String authToken) {
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
-            return  true;
-        } catch (SignatureException e){
+            return true;
+        } catch (SignatureException e) {
             log.error("Invalid signature: {}", e.getMessage());
-        } catch (MalformedJwtException e){
+        } catch (MalformedJwtException e) {
             log.error("Invalid token: {}", e.getMessage());
-        } catch (ExpiredJwtException e){
+        } catch (ExpiredJwtException e) {
             log.error("Token is expired: {}", e.getMessage());
-        }catch (UnsupportedJwtException e){
+        } catch (UnsupportedJwtException e) {
             log.error("Token is unsupported: {}", e.getMessage());
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             log.error("Claims string is empty: {}", e.getMessage());
         }
         return false;

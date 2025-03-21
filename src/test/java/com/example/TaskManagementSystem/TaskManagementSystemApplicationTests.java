@@ -9,10 +9,12 @@ import com.example.TaskManagementSystem.repository.TaskRepository;
 import com.example.TaskManagementSystem.repository.UserRepository;
 import com.example.TaskManagementSystem.service.TaskService;
 import com.example.TaskManagementSystem.service.UserService;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -26,7 +28,6 @@ import org.testcontainers.utility.DockerImageName;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -91,8 +92,5 @@ public class TaskManagementSystemApplicationTests {
         assertEquals(HttpStatus.OK, resultForTask.getStatusCode());
         verify(userRepository, times(1)).findById(userId);
         verify(taskRepository, times(1)).findById(userId);
-
-
-
     }
 }

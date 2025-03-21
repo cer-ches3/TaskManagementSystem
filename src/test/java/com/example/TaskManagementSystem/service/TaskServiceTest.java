@@ -2,7 +2,6 @@ package com.example.TaskManagementSystem.service;
 
 import com.example.TaskManagementSystem.model.PriorityTask;
 import com.example.TaskManagementSystem.model.StatusTask;
-import com.example.TaskManagementSystem.model.dto.CommentDto;
 import com.example.TaskManagementSystem.model.dto.TaskDto;
 import com.example.TaskManagementSystem.model.entity.Task;
 import com.example.TaskManagementSystem.model.entity.User;
@@ -21,7 +20,10 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -181,7 +183,7 @@ public class TaskServiceTest {
 
         assertEquals(HttpStatus.OK, result.getStatusCode());
         assertEquals(MessageFormat.format("Task with ID: {0} is deleted.", taskId), result.getBody());
-        verify(taskRepository,times(1)).existsById(taskId);
+        verify(taskRepository, times(1)).existsById(taskId);
     }
 
     @Test
@@ -194,7 +196,7 @@ public class TaskServiceTest {
 
         assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
         assertEquals(MessageFormat.format("Task with ID: {0} not found!", taskId), result.getBody());
-        verify(taskRepository,times(1)).existsById(taskId);
+        verify(taskRepository, times(1)).existsById(taskId);
     }
 }
 

@@ -56,13 +56,13 @@ public class TaskService {
         String username = authentication.getName();
         User author = userRepository.findByUsername(username).orElse(null);
 
-        Task newTask = mapToEntity(taskDto);
         User executor = userRepository.findById(taskDto.getExecutorId()).orElse(null);
 
         if (executor == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(MessageFormat.format("Executor with ID: {0} not found!", taskDto.getExecutorId()));
         }
 
+        Task newTask = mapToEntity(taskDto);
         newTask.setAuthor(author);
         newTask.setExecutor(executor);
         taskRepository.save(newTask);

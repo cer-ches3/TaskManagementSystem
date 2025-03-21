@@ -13,15 +13,16 @@ public class WebAppExceptionHandler {
 
     @ExceptionHandler(value = AlreadyExistsException.class)
     public ResponseEntity<ErrorResponseBody> alreadyExistHandler(
-            AlreadyExistsException ex, WebRequest request){
+            AlreadyExistsException ex, WebRequest request) {
         return buildResponse(HttpStatus.BAD_REQUEST, ex, request);
     }
 
     @ExceptionHandler(value = EntityNotFoundException.class)
     public ResponseEntity<ErrorResponseBody> notFoundHandler(
-            EntityNotFoundException ex, WebRequest request){
+            EntityNotFoundException ex, WebRequest request) {
         return buildResponse(HttpStatus.NOT_FOUND, ex, request);
     }
+
     private ResponseEntity<ErrorResponseBody> buildResponse(
             HttpStatus httpStatus,
             Exception ex,
